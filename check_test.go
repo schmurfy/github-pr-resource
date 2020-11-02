@@ -280,7 +280,7 @@ func TestCheck(t *testing.T) {
 					}
 				}
 			}
-			github.ListOpenPullRequestsReturns(pullRequests, nil)
+			github.ListPullRequestsReturns(pullRequests, nil)
 
 			for i, file := range tc.files {
 				github.ListModifiedFilesReturnsOnCall(i, file, nil)
