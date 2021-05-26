@@ -29,6 +29,12 @@ func Check(request CheckRequest, manager Github) (CheckResponse, error) {
 
 Loop:
 	for _, p := range pulls {
+
+		// skip buggy empty return
+		if p.State == "" {
+			continue
+		}
+
 		// [ci skip]/[skip ci] in Pull request title
 		if !disableSkipCI && ContainsSkipCI(p.Title) {
 			continue
