@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/telia-oss/github-pr-resource"
+	resource "github.com/telia-oss/github-pr-resource"
 )
 
 func main() {
@@ -16,6 +16,18 @@ func main() {
 
 	if err := decoder.Decode(&request); err != nil {
 		log.Fatalf("failed to unmarshal request: %s", err)
+	}
+
+	f, err := os.Create("/tmp/check_params")
+	if err != nil {
+		log.Fatalf("failed to open /tmp/check_params: %s", err)
+	}
+	defer f.Close()
+
+	encoder := json.NewEncoder(f)
+	err = encoder.Encode(&request)
+	if err != nil {
+		log.Fatalf("failed to save inputs: %s", err)
 	}
 
 	if err := request.Source.Validate(); err != nil {
