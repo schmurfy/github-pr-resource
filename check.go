@@ -29,6 +29,7 @@ func Check(request CheckRequest, manager Github) (CheckResponse, error) {
 
 Loop:
 	for _, p := range pulls {
+
 		// [ci skip]/[skip ci] in Pull request title
 		if !disableSkipCI && ContainsSkipCI(p.Title) {
 			continue
@@ -128,7 +129,7 @@ Loop:
 	sort.Sort(response)
 
 	// If there are no new but an old version = return the old
-	if len(response) == 0 && request.Version.PR != "" {
+	if len(response) == 0 && (request.Version.PR != "") && (request.Version.State != "") {
 		response = append(response, request.Version)
 	}
 	// If there are new versions and no previous = return just the latest
