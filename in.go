@@ -35,7 +35,7 @@ func Get(request GetRequest, github Github, git Git, outputDir string) (*GetResp
 	}
 
 	// Fetch the PR and merge the specified commit into the base
-	if err := git.Fetch(pull.Repository.URL, pull.Number, request.Params.GitDepth, request.Params.Submodules); err != nil {
+	if err := git.Fetch(pull.Repository.URL, pull.Number, request.Params.GitDepth, request.Params.Submodules, pull.HeadRefName); err != nil {
 		return nil, err
 	}
 
@@ -52,6 +52,7 @@ func Get(request GetRequest, github Github, git Git, outputDir string) (*GetResp
 	metadata.Add("author", pull.Tip.Author.User.Login)
 	metadata.Add("author_email", pull.Tip.Author.Email)
 	metadata.Add("state", string(pull.State))
+	metadata.Add("merge_commit", pull.MergeCommit.Oid)
 
 	labelsJSON, err := serializeLabels(pull)
 	if err != nil {

@@ -19,7 +19,7 @@ type Git interface {
 	Init(string) error
 	Pull(string, string, int, bool, bool) error
 	RevParse(string) (string, error)
-	Fetch(string, int, int, bool) error
+	Fetch(string, int, int, bool, string) error
 	Checkout(string, string, bool) error
 	Merge(string, bool) error
 	Rebase(string, string, bool) error
@@ -138,13 +138,13 @@ func (g *GitClient) RevParse(branch string) (string, error) {
 }
 
 // Fetch ...
-func (g *GitClient) Fetch(uri string, prNumber int, depth int, submodules bool) error {
+func (g *GitClient) Fetch(uri string, prNumber int, depth int, submodules bool, branch string) error {
 	endpoint, err := g.Endpoint(uri)
 	if err != nil {
 		return err
 	}
 
-	args := []string{"fetch", endpoint, fmt.Sprintf("pull/%s/head", strconv.Itoa(prNumber))}
+	args := []string{"fetch", endpoint, fmt.Sprintf("pull/%s/head:%s", strconv.Itoa(prNumber), branch)}
 	if depth > 0 {
 		args = append(args, "--depth", strconv.Itoa(depth))
 	}
@@ -171,7 +171,7 @@ func (g *GitClient) Fetch(uri string, prNumber int, depth int, submodules bool) 
 
 // CheckOut
 func (g *GitClient) Checkout(branch, sha string, submodules bool) error {
-	if err := g.command("git", "checkout", "-b", branch, sha).Run(); err != nil {
+	if err := g.command("git", "switch", branch).Run(); err != nil {
 		return fmt.Errorf("checkout failed: %s", err)
 	}
 

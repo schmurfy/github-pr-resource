@@ -257,9 +257,10 @@ func TestGet(t *testing.T) {
 					assert.Equal(t, tc.parameters.Submodules, submodules)
 				}
 			default:
-				if assert.Equal(t, 1, git.MergeCallCount()) {
-					tip, submodules := git.MergeArgsForCall(0)
-					assert.Equal(t, tc.pullRequest.Tip.OID, tip)
+				if assert.Equal(t, 1, git.CheckoutCallCount()) {
+					branch, sha, submodules := git.CheckoutArgsForCall(0)
+					assert.Equal(t, tc.pullRequest.HeadRefName, branch)
+					assert.Equal(t, tc.pullRequest.Tip.OID, sha)
 					assert.Equal(t, tc.parameters.Submodules, submodules)
 				}
 			}

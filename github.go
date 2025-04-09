@@ -82,9 +82,6 @@ func NewGithubClient(s *Source) (*GithubClient, error) {
 			return nil, fmt.Errorf("failed to parse v4 endpoint: %s", err)
 		}
 		v4 = githubv4.NewEnterpriseClient(endpoint.String(), client)
-		if err != nil {
-			return nil, err
-		}
 	} else {
 		v4 = githubv4.NewClient(client)
 	}

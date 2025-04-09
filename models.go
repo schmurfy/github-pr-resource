@@ -27,6 +27,7 @@ type Source struct {
 	RequiredReviewApprovals int                         `json:"required_review_approvals"`
 	Labels                  []string                    `json:"labels"`
 	States                  []githubv4.PullRequestState `json:"states"`
+	CacheKey                string                      `json:"cache_key"`
 }
 
 // Validate the source configuration.
@@ -106,6 +107,9 @@ type PullRequestObject struct {
 	HeadRefName string
 	Repository  struct {
 		URL string
+	}
+	MergeCommit struct {
+		Oid string
 	}
 	IsCrossRepository bool
 	IsDraft           bool
