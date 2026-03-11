@@ -18,6 +18,8 @@ func main() {
 		log.Fatalf("failed to unmarshal request: %s", err)
 	}
 
+	request.Params.ListChangedFiles = true
+
 	if len(os.Args) < 2 {
 		log.Fatalf("missing arguments")
 	}

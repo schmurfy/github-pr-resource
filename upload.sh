@@ -2,9 +2,9 @@
 
 set -e
 
-NAME="eu.gcr.io/birota-cloud/github-pr-resource:1.9"
+NAME="eu.gcr.io/birota-cloud/github-pr-resource:1.11"
 
 make build
 
-docker build -t $NAME .
+docker build --platform linux/amd64 -t $NAME .
 docker push $NAME
